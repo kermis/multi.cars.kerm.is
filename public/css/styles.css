@@ -1,3 +1,8 @@
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
 html, body {
     margin: 0;
     padding: 0;
@@ -80,7 +85,7 @@ button:hover {
 }
 button:active {
 }
-.choose_button img{
+.choose_button img {
     margin-top: 0;
 }
 .chose {
@@ -94,7 +99,6 @@ img {
 .container {
     max-width: 50%;
 }
-
 .chose_leap .container {
     max-width: 50%;
     min-width: 40%;
@@ -150,19 +154,58 @@ img.arrow {
     display: none;
     width: 200px;
 }
-
-.full-width{
+.full-width {
     width: 100%;
     display: block;
     text-align: center;
     bottom: 0;
 }
-
 .chose_leap .play {
     padding: 10px;
     font-size: 16pt;
     font-family: bebas-neue, sans-serif;
     -webkit-font-smoothing: antialiased;
     border-radius: 10px;
-
+}
+.split {
+    background: white;
+}
+.split-horizontal {
+    position: absolute;
+    height: 10px;
+    width: 100%;
+    top: 50%;
+    margin-top: -5px;
+    z-index: 500;
+}
+.split-vertical {
+    position: absolute;
+    width: 10px;
+    height: 100%;
+    left: 50%;
+    margin-left: -5px;
+    z-index: 500;
+}
+.number {
+    font-size: 30pt;
+    color: white;
+    position: absolute !important;
+    z-index: 500;
+    text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+.number-1 {
+    top: 44%;
+    left: 48%;
+}
+.number-2 {
+    top: 44%;
+    left: 98%;
+}
+.number-3 {
+    top: 94%;
+    left: 48%;
+}
+.number-4 {
+    top: 94%;
+    left: 98%;
 }

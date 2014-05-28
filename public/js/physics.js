@@ -2,6 +2,7 @@ var ground, otoo, otooPhysi;
 var vehicle_body, vehicle;
 var car = {}, car_material;
 var velocity = 40;
+var total = 4;
 
 var otoos = [];
 var cars = [];
@@ -36,53 +37,26 @@ var physics = {
 
         physics.buildBarriers();
     },
-    makeNPCcar: function() {
+    makeACar: function( callback ) {
 
-        var total = 9;
+        // cars[0] = {};
 
-        for (var i = 1; i < total; i++) {
+        // carBuilder.setPlayerOtoo(0); //set the model
+        // carBuilder.makeCarBody(cars[0], 0, false); //set the physical car
+        // carBuilder.setWheels(cars[0], 0, false); //add the weels
+
+
+        for (var i = 0; i < total; i++) {
 
             cars[i] = {};
 
-            carBuilder.setNpcOtoo(i);
+            carBuilder.setPlayerOtoo(i);
 
             carBuilder.makeCarBody(cars[i], i, true);
 
             carBuilder.setWheels(cars[i], i, true);
 
         };
-
-    },
-    makeACar: function() {
-
-        cars[0] = {};
-
-        carBuilder.setPlayerOtoo(0); //set the model
-        carBuilder.makeCarBody(cars[0], 0, false); //set the physical car
-        carBuilder.setWheels(cars[0], 0, false); //add the weels
-
-
-        var car = cars[0];
-        car.body.addEventListener('collision', function(e) {
-            carCollisionHandler(e, car)
-        })
-        // car.body.children[0].addEventListener('collision', function(e){carCollisionHandler(e, car)})
-
-
-        function carCollisionHandler(otherObjects, relativeVelocity, relativeRotation, contactNormal) {
-            var otName = otherObjects.name;
-            if(otName != 'wheel'){
-                createjs.Sound.play("bump");
-            }
-        };
-
-        document.addEventListener('keydown', function(e) {
-            carController.controlCar(e, car)
-        })
-
-        document.addEventListener('keyup', function(e) {
-            carController.stopCar(e, car)
-        })
 
     },
     buildBarriers: function() {
@@ -151,24 +125,13 @@ var physics = {
     function setOtooPosition() {
 
 
-        // scene.updateMatrixWorld(true);
-
-        if (otoos[0]) {
-            otoos[0].position.set(cars[0].body.position.x, cars[0].body.position.y - 3.5, cars[0].body.position.z - 2);
-            otoos[0].rotation.set(cars[0].body.rotation.x, cars[0].body.rotation.y, cars[0].body.rotation.z);
-        }
-
-        for (var i = 1; i < otoos.length; i++) {
+        for (var i = 0; i < otoos.length; i++) {
 
             var position = new THREE.Vector3();
-            // position.getPositionFromMatrix( cars[i] );
-            // otoos[i].position.set(position.x, position.y - 8.5, position.z - 2);
-            // otoos[i].rotation.set(position.x, position.y - 8.5, position.z - 2);
 
             // cars[i]
             otoos[i].position.set(cars[i].body.position.x, cars[i].body.position.y - 3.5, cars[i].body.position.z);
             otoos[i].rotation.set(cars[i].body.rotation.x, cars[i].body.rotation.y, cars[i].body.rotation.z);
-            // otoos[i].rotation.set(0, cars[i].body.rotation.y, 0);
         };
 
     }
@@ -178,10 +141,7 @@ var physics = {
         //A rudimentary AI, wich is called every second and sends a random direction and velocity to each car
 
         //to make all the cars move
-        for (var i = 1; i < otoos.length; i++) {
-            // cars[i]
-            // otoos[i].position.set(cars[i].body.position.x, cars[i].body.position.y - 8.5, cars[i].body.position.z - 2);
-            // otoos[i].rotation.set(cars[i].body.rotation.x, cars[i].body.rotation.y, cars[i].body.rotation.z);
+        for (var i = 0; i < otoos.length; i++) {
 
             var direction = Math.round(getRandomArbitary(-2, 4));
             if (direction == 0) {

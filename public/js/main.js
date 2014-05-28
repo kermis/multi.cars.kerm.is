@@ -9,7 +9,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 //three.js vars
 var container, stats;
 
-var camera, sceneCam, controls, scene, renderer, composer, POVcamera;
+var camera, sceneCam, controls, scene, renderer, composer, POVcamera, cameras = [];
 
 var overViewCam;
 var overViewCamHolder;
@@ -31,6 +31,32 @@ var mapCamera, mapWidth = 240,
 var playingWithLeap = false;
 var playingWithPhone = false;
 var playingWithKeys = false;
+
+var views = [{
+    left: 0,
+    bottom: 0,
+    width: 0.5,
+    height: 0.5,
+    fov: 40,
+}, {
+    left: 0.5,
+    bottom: 0,
+    width: 0.5,
+    height: 0.5,
+    fov: 40,
+}, {
+    left: 0.5,
+    bottom: 0.5,
+    width: 0.5,
+    height: 0.5,
+    fov: 40,
+}, {
+    left: 0,
+    bottom: 0.5,
+    width: 0.5,
+    height: 0.5,
+    fov: 40,
+}];
 
 $(function() {
     var queue = new createjs.LoadQueue();
@@ -68,6 +94,7 @@ function handleComplete() {
     init();
     animate();
 
+    playing = true;
     // createjs.Sound.play("music", {loop:-1});
 }
 
@@ -92,8 +119,8 @@ function init() {
         fixedTimeStep: 1 / 120
     });
     scene.setGravity(new THREE.Vector3(0, -400, 0));
-
     camConfig();
+
 
 
     //landscape
@@ -106,25 +133,28 @@ function init() {
 
     });
 
-    physics.setGround();
-    physics.makeACar();
 
-    physics.makeNPCcar(car);
+
+    physics.setGround();
+    physics.makeACar(camConfig);
 
     //
     // lights
     // var light = new THREE.HemisphereLight(0xFFC8C8, 1.5)
-    var light = new THREE.HemisphereLight(0xB98EFA, 0.8)
-    // var light = new THREE.HemisphereLight(0xFFFFFF, 1.2)
+    // var light = new THREE.HemisphereLight(0xB98EFA, 0.8) //--> paars
+    // var light = new THREE.HemisphereLight(0x63D7FF, 0.4) // --> lichtblauw
+    var light = new THREE.HemisphereLight(0xF3FF8E, 0.2) // --> lichtgeel
+    // var light = new THREE.HemisphereLight(0xFFFFFF, 1.2) //--> wit
     scene.add(light)
 
-    var light2 = new THREE.HemisphereLight(0x404040, 0.5); // soft white light
+    var light2 = new THREE.HemisphereLight(0x404040, 0.8); // soft white light
     scene.add(light2);
 
     //sky
     var geometrySky = new THREE.SphereGeometry(4500, 32, 32)
     var materialSky = new THREE.MeshBasicMaterial({
-        color: 0x261d32
+        // color: 0x261d32
+        color: 0x63D7FF
     })
     // materialSky.map = THREE.ImageUtils.loadTexture('../img/sky.jpg')
     materialSky.side = THREE.BackSide;
@@ -155,7 +185,7 @@ function init() {
     container.appendChild(stats.domElement);
     //
 
-    initPostProcessing();
+    // initPostProcessing();
 }
 
 function initPostProcessing() {
@@ -180,18 +210,18 @@ function initPostProcessing() {
     // composer.addPass(effectVignette);
 
 
-    var bokehPass = new THREE.BokehPass( scene, camera, {
-            focus:      1.0,
-            aperture:   0.025,
-            maxblur:    50.0,
+    // var bokehPass = new THREE.BokehPass(scene, camera, {
+    //     focus: 1.0,
+    //     aperture: 0.025,
+    //     maxblur: 50.0,
 
-            width: window.innerWidth,
-            height: window.innerHeight
-        } );
+    //     width: window.innerWidth,
+    //     height: window.innerHeight
+    // });
 
-    bokehPass.renderToScreen = true;
+    // bokehPass.renderToScreen = true;
 
-    composer.addPass(bokehPass);
+    // composer.addPass(bokehPass);
 
 
 
@@ -285,8 +315,35 @@ function animate() {
 function render() {
 
     // renderer.render(scene, sceneCam);
-    renderer.clear();
-    composer.render();
+    // renderer.clear();
+    // composer.render();
+    //
+    var w = windowWidth = window.innerWidth,
+        h = windowHeight = window.innerHeight;
+
+    for (var ii = 0; ii < views.length; ++ii) {
+
+
+        view = views[ii];
+        camera = cameras[ii].children[0];
+
+        if(camera){
+
+            var left = Math.floor(windowWidth * view.left);
+            var bottom = Math.floor(windowHeight * view.bottom);
+            var width = Math.floor(windowWidth * view.width);
+            var height = Math.floor(windowHeight * view.height);
+            renderer.setViewport(left, bottom, width, height);
+            renderer.setScissor(left, bottom, width, height);
+            renderer.enableScissorTest(true);
+            renderer.setClearColor(view.background);
+
+            camera.aspect = width / height;
+            // camera.updateProjectionMatrix();
+
+            renderer.render(scene, camera);
+        }
+    }
 
     stats.update();
 
@@ -296,8 +353,7 @@ function render() {
         setOtooPosition();
     }
 
-    var w = window.innerWidth,
-        h = window.innerHeight;
+
 
     // renderer.clear();
     // renderer.render( scene, sceneCam );
@@ -336,32 +392,26 @@ function physicsLoopAI() {
 }
 
 function camConfig() {
-    Pcamera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 10, 10000);
-    Pcamera.position.set(0, 100, 130);
-    Pcamera.rotation.x = deg2rad(-40);
-    // camera.lookAt(0,0,0);
 
-    POVcamera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 10, 10000);
-    POVcamera.position.z = 22;
+    for (var ii = 0; ii < views.length; ++ii) {
 
-    camInUse = 2;
+        console.log(otoos[ii])
+        var view = views[ii];
+        var POVcamera = new THREE.PerspectiveCamera(view.fov, window.innerWidth / window.innerHeight, 1, 10000);
 
-    overViewCamHolder = new THREE.Object3D();
-    overViewCam = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 10, 10000);
-    overViewCam.rotation.x = -1.570796;
+        POVcamera.position.y = 11;
+        POVcamera.position.z = 10;
 
-    scene.add(overViewCamHolder)
-    overViewCamHolder.position.y = 630;
-    overViewCamHolder.position.x = 500;
-    // overViewCamHolder.position.x = 700;
-    overViewCamHolder.position.z = -30;
-    // overViewCamHolder.rotation.y = 1.570796;
-    overViewCamHolder.add(overViewCam)
-    //
-    camArr = [Pcamera, POVcamera, overViewCam]
+        var POVcamHolder = new THREE.Object3D();
 
-    // camera = mainCamera;
-    sceneCam = POVcamera;
-    camera = POVcamera;
+        POVcamHolder.scale.set(30, 30, 30)
+        POVcamHolder.rotation.y = 1.570796;
+        // POVcamHolder.__dirtyposition = true;
+
+        POVcamHolder.add(POVcamera);
+        cameras[ii] = POVcamHolder;
+
+        view.camera = cameras[ii];
+    }
 
 }

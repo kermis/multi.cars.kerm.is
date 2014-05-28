@@ -80,14 +80,14 @@ var carController = {
     },
     rotateCar: function(car, angle) {
 
-        if (angle < -8) {
+        if (angle < -12) {
             // // configureAngularMotor(which, low_angle, high_angle, velocity, max_force)
             car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 6, Math.PI / 6, 3, 200);
             car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 6, Math.PI / 6, 3, 200);
 
             car.wheel_fl_constraint.enableAngularMotor(1);
             car.wheel_fr_constraint.enableAngularMotor(1);
-        } else if (angle > 8) {
+        } else if (angle > 12) {
             car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 6, Math.PI / 6, -3, 200);
             car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 6, Math.PI / 6, -3, 200);
 

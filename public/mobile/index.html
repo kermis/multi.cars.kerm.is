@@ -18,7 +18,8 @@
         padding: 0;
         width: 100%;
         height: 100%;
-        font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-family: bebas-neue, sans-serif;
+        letter-spacing: 1px;
         overflow: hidden;
         /*// background: #8ECCE3;*/
         -webkit-touch-callout: none;
@@ -53,7 +54,7 @@
         left: 5%;
         top: 0%;
     }
-    button {
+    button.pedal {
         width: 40%;
         height: 70%;
         border: none;
@@ -73,7 +74,7 @@
         -o-transition: all 200ms;
         transition: all 200ms;
     }
-    button:active {
+    button.pedal:active {
         -webkit-transform: rotateX(0deg);
         /* Chrome, Safari, Opera */
         transform: rotateX(0deg);
@@ -106,7 +107,41 @@
         -webkit-transform: perspective(1em) rotateX(0);
         transform: perspective(1em) rotateX(0);
     }
+    #multiplayer-overlay{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 1020;
+        text-align: center;
+        background: #EFEFEF;
+        padding: 0;
+    }
+    #multiplayer-overlay button{
+        font-family: bebas-neue, sans-serif;
+        font-size: 3rem;
+        margin: 5%;
+        width: 40%;
+        height: 33%;
+        float: left;
+        border: none;
+        background: #c7d84b;
+        border-radius: 5px;
+        background: url('/img/cart.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center bottom;
+    }
+    #multiplayer-overlay button:hover{
+        -webkit-filter: saturate(15);
+        filter: saturate(15);
+    }
+    #multiplayer-overlay .disabled{
+        -webkit-filter: saturate(0);
+        filter: saturate(0);
+        opacity: 0.5;
+    }
     </style>
+    <script src="//use.edgefonts.net/bebas-neue.js"></script>
 </head>
 
 <body>
@@ -120,13 +155,20 @@
         <div class="x3"></div>
 
         <div class="button-holder">
-            <button class="round" id="accelerate">Accelerate</button>
+            <button class="round pedal" id="accelerate">Accelerate</button>
         </div>
-        <button class="round" id="reverse">Brake / Reverse</button>
+        <button class="round pedal" id="reverse">Brake / Reverse</button>
 
     </div>
-    <div id='overlay'>
+    <div id="overlay">
         Please rotate your phone to play the game
+    </div>
+    <div id="multiplayer-overlay">
+    <h1>Choose a car</h1>
+    <button >1</button>
+    <button>2</button>
+    <button>3</button>
+    <button>4</button>
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="http://code.createjs.com/soundjs-0.5.2.min.js"></script>

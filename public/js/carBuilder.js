@@ -10,6 +10,7 @@ var carBuilder = {
         otooLoader.load('/models/botsotoo.js', function(mesh) {
 
             mesh.scale.set(0.03, 0.03, 0.03)
+
             otoos[index] = mesh;
 
             steeringWheel = new THREE.Object3D();
@@ -17,22 +18,17 @@ var carBuilder = {
             steeringWheel.add(mesh.children[0])
             otoos[index].add(steeringWheel)
 
+            mesh.children[0].children[2].children[0].material.color.r = Math.random();
+            mesh.children[0].children[2].children[0].material.color.g = Math.random();
+            mesh.children[0].children[2].children[0].material.color.b = Math.random();
+
             // steeringWheel.children[1].rotation.y = 1;
 
             scene.add(otoos[index]);
 
             otoos[index].position.set(0, 100, 0);
-            POVcamera.position.y = 10;
-            POVcamera.position.z = 10;
 
-            POVcamHolder = new THREE.Object3D();
-
-            POVcamHolder.scale.set(30, 30, 30)
-            POVcamHolder.rotation.y = 1.570796;
-            // POVcamHolder.__dirtyposition = true;
-
-            POVcamHolder.add(POVcamera);
-            otoos[index].add(POVcamHolder);
+            otoos[index].add(cameras[index])
 
         });
     },
@@ -111,42 +107,42 @@ var carBuilder = {
         // car.bodyRotated.position.z = carStartZ;
 
 
-        car.body.position.y = 18;
+        car.body.position.y = 10;
         car.body.position.x = carStartX;
         car.body.position.z = carStartZ;
 
         //set the start positions of the cars
         if (npc) {
             switch (index) {
+                // case 1:
+                //     car.body.position.x = carStartX - 100;
+                //     car.body.position.z = carStartZ;
+                //     break;
+                // case 2:
+                //     car.body.position.x = carStartX - 50;
+                //     car.body.position.z = carStartZ;
+                //     break;
+                // case 3:
+                //     car.body.position.x = carStartX - 50;
+                //     car.body.position.z = carStartZ - 170;
+                //     break;
+                // case 4:
+                //     car.body.position.x = carStartX - 100;
+                //     car.body.position.z = carStartZ - 150;
+                //     break;
                 case 1:
-                    car.body.position.x = carStartX - 100;
-                    car.body.position.z = carStartZ;
-                    break;
-                case 2:
-                    car.body.position.x = carStartX - 50;
-                    car.body.position.z = carStartZ;
-                    break;
-                case 3:
-                    car.body.position.x = carStartX - 50;
-                    car.body.position.z = carStartZ - 170;
-                    break;
-                case 4:
-                    car.body.position.x = carStartX - 100;
-                    car.body.position.z = carStartZ - 150;
-                    break;
-                case 5:
                     car.body.position.x = carStartX + 700;
                     car.body.position.z = carStartZ - 300;
                     break;
-                case 6:
+                case 2:
                     car.body.position.x = carStartX + 730;
                     car.body.position.z = carStartZ + 200;
                     break;
-                case 7:
+                case 3:
                     car.body.position.x = carStartX + 700;
                     car.body.position.z = carStartZ - 250;
                     break;
-                case 8:
+                case 4:
                     car.body.position.x = carStartX + 800;
                     car.body.position.z = carStartZ - 60;
                     break;
