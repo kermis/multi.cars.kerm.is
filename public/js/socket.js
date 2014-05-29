@@ -2,6 +2,7 @@
 /////   Socket Stuff
 ////////////////////////////////////
 var room = generateRoomId();
+var playersJoined = [false, false, false, false];
 
 var socketController = {
     currentURL: window.location.href,
@@ -32,6 +33,7 @@ var socketController = {
         socketController.socket.on('message', this.socketMessage);
         socketController.socket.on('moved', this.command);
         socketController.socket.on('motionDataOut', this.socketMotionDataOut);
+        socketController.socket.on('sync', this.handleSync);
 
         this.updateInstructions();
     },
@@ -39,25 +41,34 @@ var socketController = {
         // Connected, let's sign-up for to receive messages for this room
         socketController.socket.emit('room', room);
         socketController.socket.emit('message', {
-            msg: 'client joined room with ID ' + room
+            msg: 'client joined room with ID ' + room,
+            room: room
         });
+
         if (debug) {
             console.log('joined room ' + room);
         }
     },
+    sendStartSignal: function(){
+        socketController.socket.emit('message', {
+            command: 'start',
+            room: room
+        })
+    },
     socketMessage: function(data) {
-        console.log('Incoming message:', data);
-        console.log(data.command)
+        // console.log('Incoming message:', data);
+        // console.log(data.command)
         if(data.command == 'stop'){
-            playing = false;
+            // playing = false;
         }else if(data.command == 'start'){
-            playing = true;
+            // playing = true;
         }
     },
     command: function(data) {
-        console.log(data);
-        if (cars[0] && playingWithPhone) {
-            carController.moveCar(cars[0], data.direction)
+        console.log(data.player);
+        if (cars[0] && playingWithPhone && data.room == room && data.player) {
+            playerIndex = data.player - 1;
+            carController.moveCar(cars[playerIndex], data.direction)
         }
         // console.log(data.direction)
     },
@@ -67,13 +78,9 @@ var socketController = {
         // Tilt Front/Back [beta]
         // Direction [alpha]
 
-        if (cars[0] && data && playingWithPhone) {
-            carController.rotateCar(cars[0], data.beta || 0)
-        }
-
-        if (!playing && playingWithPhone) {
-            playing = true;
-            $('.info').fadeOut();
+        if (cars[0] && data && playingWithPhone && data.room == room) {
+            playerIndex = data.player - 1;
+            carController.rotateCar(cars[playerIndex], data.beta || 0)
 
         }
     },
@@ -82,6 +89,8 @@ var socketController = {
         $('.instruct').fadeIn('fast')
 
         var genURL = this.currentURL + '/mobile/#' + room;
+
+        console.log(genURL)
 
         // <span class="go_to_site">http://c.kerm.is/</span>
         //             <br>
@@ -97,6 +106,20 @@ var socketController = {
             height: 200
         });
 
+    },
+    handleSync: function(data){
+        if(data.room == room)
+            switch(data.type){
+                case 'status':
+                    for (var i = 0; i < data.value.length; i++) {
+                        $('.number-'+data.value[i]).css({color: 'red'});
+                        playersJoined[data.value[i]-1] = true;
+                    };
+                    break;
+                case 'sync':
+                    console.log('player '+ data.value + ' joined');
+                    break;
+            }
     }
 
 }

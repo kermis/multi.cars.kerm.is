@@ -30,6 +30,8 @@ $(function(){
 	$('.play').on('click', function(){
 		$('.info').fadeOut();
 		playing = true;
+
+		socketController.sendStartSignal();
 	})
 
 	$('.back-button').on('click', function(){

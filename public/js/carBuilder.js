@@ -18,9 +18,32 @@ var carBuilder = {
             steeringWheel.add(mesh.children[0])
             otoos[index].add(steeringWheel)
 
-            mesh.children[0].children[2].children[0].material.color.r = Math.random();
-            mesh.children[0].children[2].children[0].material.color.g = Math.random();
-            mesh.children[0].children[2].children[0].material.color.b = Math.random();
+            // mesh.children[0].children[2].children[0].material.color.r = Math.random();
+            // mesh.children[0].children[2].children[0].material.color.g = Math.random();
+            // mesh.children[0].children[2].children[0].material.color.b = Math.random();
+
+             switch(index){
+                case 0:
+                    mesh.children[0].children[2].children[0].material.color.r = 1;
+                    mesh.children[0].children[2].children[0].material.color.g = 0;
+                    mesh.children[0].children[2].children[0].material.color.b = 0;
+                    break;
+                case 1:
+                    mesh.children[0].children[2].children[0].material.color.r = 0;
+                    mesh.children[0].children[2].children[0].material.color.g = 1;
+                    mesh.children[0].children[2].children[0].material.color.b = 0;
+                    break;
+                case 2:
+                    mesh.children[0].children[2].children[0].material.color.r = 0;
+                    mesh.children[0].children[2].children[0].material.color.g = 0;
+                    mesh.children[0].children[2].children[0].material.color.b = 1;
+                    break;
+                case 3:
+                    mesh.children[0].children[2].children[0].material.color.r = 0;
+                    mesh.children[0].children[2].children[0].material.color.g = 0;
+                    mesh.children[0].children[2].children[0].material.color.b = 0;
+                break;
+            }
 
             // steeringWheel.children[1].rotation.y = 1;
 
@@ -50,9 +73,31 @@ var carBuilder = {
 
             // console.log(mesh.children[0].children[2])
 
-            mesh.children[0].children[2].children[0].material.color.r = Math.random();
-            mesh.children[0].children[2].children[0].material.color.g = Math.random();
-            mesh.children[0].children[2].children[0].material.color.b = Math.random();
+            // mesh.children[0].children[2].children[0].material.color.r = Math.random();
+            // mesh.children[0].children[2].children[0].material.color.g = Math.random();
+            // mesh.children[0].children[2].children[0].material.color.b = Math.random();
+            switch(index){
+                case 0:
+                    mesh.children[0].children[2].children[0].material.color.r = 1;
+                    mesh.children[0].children[2].children[0].material.color.g = 0;
+                    mesh.children[0].children[2].children[0].material.color.b = 0;
+                    break;
+                case 1:
+                    mesh.children[0].children[2].children[0].material.color.r = 0;
+                    mesh.children[0].children[2].children[0].material.color.g = 1;
+                    mesh.children[0].children[2].children[0].material.color.b = 0;
+                    break;
+                case 2:
+                    mesh.children[0].children[2].children[0].material.color.r = 0;
+                    mesh.children[0].children[2].children[0].material.color.g = 0;
+                    mesh.children[0].children[2].children[0].material.color.b = 1;
+                    break;
+                case 3:
+                    mesh.children[0].children[2].children[0].material.color.r = 0;
+                    mesh.children[0].children[2].children[0].material.color.g = 0;
+                    mesh.children[0].children[2].children[0].material.color.b = 0;
+                break;
+            }
 
             // steeringWheel.children[1].rotation.y = 1;
 

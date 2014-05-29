@@ -34,13 +34,7 @@ var playingWithKeys = false;
 
 var views = [{
     left: 0,
-    bottom: 0,
-    width: 0.5,
-    height: 0.5,
-    fov: 40,
-}, {
-    left: 0.5,
-    bottom: 0,
+    bottom: 0.5,
     width: 0.5,
     height: 0.5,
     fov: 40,
@@ -52,7 +46,13 @@ var views = [{
     fov: 40,
 }, {
     left: 0,
-    bottom: 0.5,
+    bottom: 0,
+    width: 0.5,
+    height: 0.5,
+    fov: 40,
+}, {
+    left: 0.5,
+    bottom: 0,
     width: 0.5,
     height: 0.5,
     fov: 40,
@@ -94,7 +94,7 @@ function handleComplete() {
     init();
     animate();
 
-    playing = true;
+    // playing = true;
     // createjs.Sound.play("music", {loop:-1});
 }
 

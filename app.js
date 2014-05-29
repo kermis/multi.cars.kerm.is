@@ -69,14 +69,18 @@ io.sockets.on('connection', function(socket) {
     })
 
     socket.on('test', function(data) {
-        // console.log(data);
         io.sockets.in(roomio).emit('test', data);
     })
 
-    socket.on('motionData', function(data) {
-        // console.log(data);
+    socket.on('sync', function(data) {
         if(roomio){
-            io.sockets.in(roomio).emit('motionDataOut', data);
+            io.sockets.in(data.room).emit('sync', data);
+        }
+    })
+
+    socket.on('motionData', function(data) {
+        if(roomio){
+            io.sockets.in(data.room).emit('motionDataOut', data);
         }
         // io.sockets.emit('motionDataOut', data);
     })
@@ -84,7 +88,7 @@ io.sockets.on('connection', function(socket) {
     socket.on('move', function(data) {
         // console.log('move', data);
         if(roomio){
-            io.sockets.in(roomio).emit('moved', data);
+            io.sockets.in(data.room).emit('moved', data);
         }
         // io.sockets.emit('motionDataOut', data);
     })
@@ -92,6 +96,3 @@ io.sockets.on('connection', function(socket) {
 
 // now, it's easy to send a message to just the clients in a given room
 // io.sockets.in(room).emit('message', 'what is going on, party people?');
-
-// this message will NOT go to the client defined above
-io.sockets. in ('foobar').emit('message', 'anyone in this room yet?');
