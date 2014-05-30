@@ -386,7 +386,10 @@
 
 
     setInterval(function() {
-        socket.emit('motionData', motionD)
+        if(motionD){
+            socket.emit('motionData', motionD)
+            // console.log('motioning');
+        }
     }, 1000 / 20)
 
     /////// to get room from URL //////////

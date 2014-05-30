@@ -64,13 +64,10 @@ io.sockets.on('connection', function(socket) {
         // console.log('currentroom: ', roomio);
         // console.log(data);
         if(roomio){
-            io.sockets.in(roomio).emit('message', data);
+            io.sockets.in(data.room).emit('message', data);
         }
     })
 
-    socket.on('test', function(data) {
-        io.sockets.in(roomio).emit('test', data);
-    })
 
     socket.on('sync', function(data) {
         if(roomio){
@@ -79,6 +76,7 @@ io.sockets.on('connection', function(socket) {
     })
 
     socket.on('motionData', function(data) {
+        // console.log(data);
         if(roomio){
             io.sockets.in(data.room).emit('motionDataOut', data);
         }

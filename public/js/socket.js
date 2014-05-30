@@ -65,7 +65,7 @@ var socketController = {
         }
     },
     command: function(data) {
-        console.log(data.player);
+        // console.log(data.player);
         if (cars[0] && playingWithPhone && data.room == room && data.player) {
             playerIndex = data.player - 1;
             carController.moveCar(cars[playerIndex], data.direction)

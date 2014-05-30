@@ -29,7 +29,7 @@ var mapCamera, mapWidth = 240,
     mapHeight = 160; // w/h should match div dimensions
 
 var playingWithLeap = false;
-var playingWithPhone = false;
+var playingWithPhone = true;
 var playingWithKeys = false;
 
 var views = [{
