@@ -70,7 +70,7 @@ $(function() {
             src: "/js/libs/ammo.js"
         }, {
             id: "landscape",
-            src: "/models/landscape2.js"
+            src: "/models/landscape3.js"
         }, {
             id: "physijs_worker",
             src: "/models/botsotoo.js"
@@ -125,7 +125,7 @@ function init() {
 
     //landscape
     var landscape = new THREE.ObjectLoader();
-    landscape.load('/models/landscape2.js', function(mesh) {
+    landscape.load('/models/landscape3.js', function(mesh) {
         // console.log(mesh);
 
         mesh.scale.set(0.1, 0.1, 0.1);

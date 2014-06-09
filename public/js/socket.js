@@ -34,6 +34,7 @@ var socketController = {
         socketController.socket.on('moved', this.command);
         socketController.socket.on('motionDataOut', this.socketMotionDataOut);
         socketController.socket.on('sync', this.handleSync);
+        socketController.socket.on('joystickMove', this.joystickMove);
 
         this.updateInstructions();
     },
@@ -68,7 +69,12 @@ var socketController = {
         // console.log(data.player);
         if (cars[0] && playingWithPhone && data.room == room && data.player) {
             playerIndex = data.player - 1;
-            carController.moveCar(cars[playerIndex], data.direction)
+            if(data.direction != 'stop'){
+                carController.moveCar(cars[playerIndex], data.direction)
+            }else{
+                console.log('stopping cart '+data.player);
+                carController.stopCarAll(cars[playerIndex])
+            }
         }
         // console.log(data.direction)
     },
@@ -100,8 +106,8 @@ var socketController = {
         $('.instruct').qrcode({
             text: genURL,
             render: "canvas", // 'canvas' or 'table'. Default value is 'canvas'
-            background: "#000000",
-            foreground: "#FFFFFF",
+            background: "#EFEFEF",
+            foreground: "#1f7350",
             width: 200,
             height: 200
         });
@@ -112,7 +118,8 @@ var socketController = {
             switch(data.type){
                 case 'status':
                     for (var i = 0; i < data.value.length; i++) {
-                        $('.number-'+data.value[i]).css({color: 'red'});
+                        // $('.number-'+data.value[i]).css({color: 'red'});
+                        $('.cart-overlay-'+data.value).fadeOut();
                         playersJoined[data.value[i]-1] = true;
                     };
                     break;
@@ -120,6 +127,21 @@ var socketController = {
                     console.log('player '+ data.value + ' joined');
                     break;
             }
+    },
+    joystickMove: function(data){
+        // console.log(data)
+        var cartIndex = data.player - 1;
+
+        if( data.left ){
+            carController.controlCarWithPhone('left', cars[cartIndex])
+        }
+        if( data.right ){
+            carController.controlCarWithPhone('right', cars[cartIndex])
+        }
+        if( !data.right && !data.left){
+            carController.controlCarWithPhone('forward', cars[cartIndex])
+        }
+
     }
 
 }

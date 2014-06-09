@@ -1,4 +1,6 @@
 var carController = {
+    rightDown: false,
+    leftDown: false,
     controlCar: function(ev, car) {
         switch (ev.keyCode) {
             case 37:
@@ -9,6 +11,8 @@ var carController = {
 
                 car.wheel_fl_constraint.enableAngularMotor(1);
                 car.wheel_fr_constraint.enableAngularMotor(1);
+
+                carController.leftDown = true;
                 break;
 
             case 39:
@@ -22,6 +26,8 @@ var carController = {
 
                 car.wheel_fl_constraint.enableAngularMotor(1);
                 car.wheel_fr_constraint.enableAngularMotor(1);
+
+                carController.rightDown = true;
                 break;
 
             case 38:
@@ -32,6 +38,7 @@ var carController = {
 
                 car.wheel_bl_constraint.enableAngularMotor(2);
                 car.wheel_br_constraint.enableAngularMotor(2);
+
                 break;
 
             case 40:
@@ -41,6 +48,7 @@ var carController = {
 
                 car.wheel_bl_constraint.enableAngularMotor(2);
                 car.wheel_br_constraint.enableAngularMotor(2);
+
                 break;
             case 32:
                 //space
@@ -53,12 +61,47 @@ var carController = {
                 break;
             case 82:
                 // r
-                init();
+                // init();
                 break;
         }
     },
+    controlCarWithPhone: function(direction, car) {
+        switch (direction) {
+            case 'left':
+                // Left
+                // // configureAngularMotor(which, low_angle, high_angle, velocity, max_force)
+                car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, 3, 200);
+                car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, 3, 200);
+
+                car.wheel_fl_constraint.enableAngularMotor(1);
+                car.wheel_fr_constraint.enableAngularMotor(1);
+                break;
+
+            case 'right':
+                // Right
+                //  MATH.PI /3 -> 60°;
+                //  MATH.PI /2 -> 90°;
+                //  MATH.PI /4 -> 45°;
+                car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, -3, 200);
+                car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 4, Math.PI / 4, -3, 200);
+
+
+                car.wheel_fl_constraint.enableAngularMotor(1);
+                car.wheel_fr_constraint.enableAngularMotor(1);
+                break;
+
+            case 'forward':
+
+                car.wheel_fl_constraint.configureAngularMotor(1, 0, 0, -3, 200);
+                car.wheel_fr_constraint.configureAngularMotor(1, 0, 0, -3, 200);
+
+
+                car.wheel_fl_constraint.enableAngularMotor(1);
+                car.wheel_fr_constraint.enableAngularMotor(1);
+        }
+    },
     moveCar: function(car, direction) {
-        // console.log(direction)
+        console.log(direction)
         var multiplier = 1;
         switch (direction) {
             case 'forward':
@@ -80,28 +123,22 @@ var carController = {
     },
     rotateCar: function(car, angle) {
 
-        // console.log(angle);
+        if (angle < -8) {
+            // // configureAngularMotor(which, low_angle, high_angle, velocity, max_force)
+            car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 6, Math.PI / 6, 3, 200);
+            car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 6, Math.PI / 6, 3, 200);
 
-        if(car){
-            if (angle < -20) {
-                // // configureAngularMotor(which, low_angle, high_angle, velocity, max_force)
-                car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 6, Math.PI / 6, 3, 200);
-                car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 6, Math.PI / 6, 3, 200);
+            car.wheel_fl_constraint.enableAngularMotor(1);
+            car.wheel_fr_constraint.enableAngularMotor(1);
+        } else if (angle > 8) {
+            car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 6, Math.PI / 6, -3, 200);
+            car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 6, Math.PI / 6, -3, 200);
 
-                car.wheel_fl_constraint.enableAngularMotor(1);
-                car.wheel_fr_constraint.enableAngularMotor(1);
-            } else if (angle > 20) {
-                car.wheel_fl_constraint.configureAngularMotor(1, -Math.PI / 6, Math.PI / 6, -3, 200);
-                car.wheel_fr_constraint.configureAngularMotor(1, -Math.PI / 6, Math.PI / 6, -3, 200);
-
-                car.wheel_fl_constraint.enableAngularMotor(1);
-                car.wheel_fr_constraint.enableAngularMotor(1);
-            } else {
-                car.wheel_fl_constraint.configureAngularMotor(1, 1, 0, -3, 200);
-                car.wheel_fr_constraint.configureAngularMotor(1, 1, 0, -3, 200);
-                car.wheel_fl_constraint.disableAngularMotor(1);
-                car.wheel_fr_constraint.disableAngularMotor(1);
-            }
+            car.wheel_fl_constraint.enableAngularMotor(1);
+            car.wheel_fr_constraint.enableAngularMotor(1);
+        } else {
+            car.wheel_fl_constraint.disableAngularMotor(1);
+            car.wheel_fr_constraint.disableAngularMotor(1);
         }
     },
     stopCarAll: function(car) {
@@ -109,6 +146,7 @@ var carController = {
         car.wheel_fr_constraint.disableAngularMotor(1);
         car.wheel_bl_constraint.disableAngularMotor(2);
         car.wheel_br_constraint.disableAngularMotor(2);
+
     },
     stopCar: function(ev, car) {
         switch (ev.keyCode) {
@@ -116,12 +154,14 @@ var carController = {
                 // Left
                 car.wheel_fl_constraint.disableAngularMotor(1);
                 car.wheel_fr_constraint.disableAngularMotor(1);
+                carController.leftDown = false;
                 break;
 
             case 39:
                 // Right
                 car.wheel_fl_constraint.disableAngularMotor(1);
                 car.wheel_fr_constraint.disableAngularMotor(1);
+                carController.rightDown = false;
                 break;
 
             case 38:
