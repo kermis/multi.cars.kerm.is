@@ -72,7 +72,7 @@ var socketController = {
             if(data.direction != 'stop'){
                 carController.moveCar(cars[playerIndex], data.direction)
             }else{
-                console.log('stopping cart '+data.player);
+                // console.log('stopping cart '+data.player);
                 carController.stopCarAll(cars[playerIndex])
             }
         }
@@ -120,11 +120,31 @@ var socketController = {
                     for (var i = 0; i < data.value.length; i++) {
                         // $('.number-'+data.value[i]).css({color: 'red'});
                         $('.cart-overlay-'+data.value).fadeOut();
-                        playersJoined[data.value[i]-1] = true;
+                        if(playersJoined[data.value[i]-1] != true){
+                            var color = "red";
+                            switch(data.value[i]){
+                                case 1:
+                                    color = 'Red';
+                                    break;
+                                case 2:
+                                    color = 'Green';
+                                    break;
+                                case 3:
+                                    color = 'Blue';
+                                    break;
+                                case 4:
+                                    color = 'Black';
+                                    break;
+                            }
+                            showNotification(color + ' cart joined');
+
+                            playersJoined[data.value[i]-1] = true;
+                        }
                     };
                     break;
                 case 'sync':
                     console.log('player '+ data.value + ' joined');
+                    var color = 'red';
                     break;
             }
     },

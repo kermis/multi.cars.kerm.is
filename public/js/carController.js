@@ -101,7 +101,7 @@ var carController = {
         }
     },
     moveCar: function(car, direction) {
-        console.log(direction)
+        // console.log(direction)
         var multiplier = 1;
         switch (direction) {
             case 'forward':

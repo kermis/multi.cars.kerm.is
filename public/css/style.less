@@ -219,3 +219,26 @@ img.arrow {
     top: 50%;
     left: 50%;
 }
+
+.notification{
+    position: absolute;
+    top: -100px;
+    left: 20%;
+    width: 60%;
+    padding: 15px;
+    font-size: 14pt;
+    text-align: center;
+    -webkit-filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.05));
+    background: @overlay-bg;
+    color: @highlight;
+    z-index: 10010;
+    -webkit-transition: all .7s ease;
+    -moz-transition: all .7s ease;
+    -ms-transition: all .7s ease;
+    -o-transition: all .7s ease;
+    transition: all .7s ease;
+    &.active{
+        top: 20px;
+    }
+}
+

@@ -42,3 +42,12 @@ $(function(){
 		$('.buttons').show();
 	})
 })
+
+function showNotification(text){
+	$('.notification').html(text);
+
+	$('.notification').addClass('active');
+	setTimeout(function(){
+		$('.notification').removeClass('active');
+	}, 1500)
+}
