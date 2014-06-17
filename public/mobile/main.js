@@ -26,6 +26,8 @@ if (!room) {
     room = 'EmptyRoom' + Math.round(Math.random() * 100000)
 }
 
+room = room.toUpperCase();
+
 var motionD, direction, sending;
 
 $(function() {
